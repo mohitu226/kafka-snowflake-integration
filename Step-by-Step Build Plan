@@ -1,0 +1,42 @@
+Step 1: Define Kafka Topics
+
+sales_events — real-time sales transactions (orders, quantities)
+
+inventory_updates — stock levels by product/store
+
+competitor_prices — competitor price feeds
+
+price_updates — updated prices or promotions sent downstream
+
+
+Step 2: Ingest Data into Kafka
+
+Write Python/Java producers or use connectors to push data into these topics.
+
+Example: sales orders every few seconds, inventory snapshots every minute, competitor prices every 5 minutes.
+
+
+Step 3: Set Up Snowflake Tables & Streams
+
+CREATE OR REPLACE TABLE sales_events_raw (
+  record_metadata VARIANT,
+  record_content VARIANT
+);
+
+CREATE OR REPLACE TABLE inventory_updates_raw (
+  record_metadata VARIANT,
+  record_content VARIANT
+);
+
+CREATE OR REPLACE TABLE competitor_prices_raw (
+  record_metadata VARIANT,
+  record_content VARIANT
+);
+
+CREATE OR REPLACE TABLE price_updates (
+  product_id STRING,
+  store_id STRING,
+  new_price FLOAT,
+  promotion STRING,
+  effective_time TIMESTAMP
+);
