@@ -1,0 +1,67 @@
+
+Configure the Snowflake Sink Connector to ingest from Kafka topics into these Snowflake tables using Snowpipe streaming for low latency.
+
+Build Pricing Logic in Snowflake (SQL & Snowpark)
+
+Calculate sales velocity (units sold per hour/day)
+
+Check inventory levels
+
+Compare competitor prices
+
+Apply business rules or ML model for dynamic price adjustments
+
+Example SQL snippet for sales velocity:
+
+WITH recent_sales AS (
+  SELECT
+    record_content:"product_id"::STRING AS product_id,
+    COUNT(*) AS units_sold,
+    DATE_TRUNC('hour', record_content:"order_time"::TIMESTAMP) AS hour
+  FROM sales_events_raw
+  WHERE record_content:"order_time" >= DATEADD(hour, -1, CURRENT_TIMESTAMP())
+  GROUP BY product_id, hour
+)
+SELECT * FROM recent_sales;
+
+Step 6: Generate Price Updates Table
+
+Based on rules, populate price_updates table with new prices/promotions.
+
+INSERT INTO price_updates (product_id, store_id, new_price, promotion, effective_time)
+SELECT
+  s.product_id,
+  i.store_id,
+  CASE
+    WHEN s.units_sold > 50 AND i.stock_level < 20 THEN i.current_price * 1.1  -- increase price if hot selling and low stock
+    ELSE i.current_price
+  END AS new_price,
+  CASE
+    WHEN s.units_sold > 50 AND i.stock_level < 20 THEN 'Flash Sale'
+    ELSE NULL
+  END AS promotion,
+  CURRENT_TIMESTAMP() AS effective_time
+FROM sales_velocity s
+JOIN inventory_levels i ON s.product_id = i.product_id;
+
+
+
+Step 7: Stream Price Updates Back to Kafka
+
+Use a Kafka Producer (Python/Java) or Snowflake External Function to push price updates into the Kafka topic price_updates for downstream systems (POS, website).
+
+
+Step 8: Downstream Systems Consume Price Updates
+
+POS systems, websites, or mobile apps subscribe to price_updates topic and update displayed prices or promotions in real-time.
+
+
+
+Create Snowflake tasks to run pricing calculations every 5 minutes or triggered by streams:
+CREATE OR REPLACE TASK run_pricing
+  WAREHOUSE = my_wh
+  SCHEDULE = '5 MINUTE'
+AS
+  CALL update_price_updates_procedure();  -- stored proc with your logic
+
+
