@@ -1,0 +1,11 @@
+[Sales Events, Inventory Updates, Competitor Prices] --> Kafka Topics
+          ↓
+[Kafka Connect Snowflake Sink] --> Snowflake Raw Tables & Streams
+          ↓
+[Snowflake SQL / Snowpark ML Pricing Models] (real-time analytics + predictions)
+          ↓
+[Snowflake Tasks & Streams] --> Generates price updates / promotion triggers
+          ↓
+[Kafka Producer] sends updated prices/promos to Kafka topics
+          ↓
+[Client Applications] consume pricing updates for frontend / POS
