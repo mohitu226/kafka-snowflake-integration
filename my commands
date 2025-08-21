@@ -10,3 +10,27 @@ confluent api-key store 52FU2BIOVRFTKMZ7 cfltcN2MbiIIGERkDqAqN2sHnJwdrlPEdPZ5AnA
 confluent api-key use 52FU2BIOVRFTKMZ7
 
 confluent kafka topic produce demo_topic
+
+
+
+{"sku3": "TEST003", "item2": 50, "location": "Warehouse_B"}
+
+
+{"sku3": "test5", "item2": 50, "india": "Warehouse_8"}
+{"sku3": "test6", "item9": 50, "america": "Warehouse_8"}
+confluent connect cluster create --config '
+{
+  "name": "snowflake-sink-connector",
+  "connector.class": "SnowflakeSinkConnector",
+  "kafka.api.key": "35W4NLZDBM6MRGYQ",
+  "kafka.api.secret": "cflttC8ATIOoR3+uA2G6Gc4pWTu/yt9uUUH3Fm3N4A50o2FyIulsyRMuH+XKayMA",
+  "topics": "topic_1",
+  "snowflake.url.name": "https://phraagu.xw03801.snowflakecomputing.com",
+  "snowflake.user.name": "MOHIT09",
+  "snowflake.password": "GalaxyRiver2025",
+  "snowflake.database.name": "INVENTORY_DB",
+  "snowflake.schema.name": "PUBLIC",
+  "snowflake.table.name": "INVENTORY",
+  "snowflake.warehouse": "COMPUTE_WH",
+  "tasks.max": "1"
+}'
