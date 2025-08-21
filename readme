@@ -1,0 +1,20 @@
+# Kafka-Snowflake Integration
+
+This project integrates Apache Kafka with Snowflake for real-time data streaming and analytics.
+
+## Overview
+- Captures streaming data from Kafka topics
+- Loads data into Snowflake tables using Kafka Connect and ETL pipelines
+- Enables scalable and reliable data ingestion and analysis
+
+## How to Use
+1. Set up Apache Kafka and Snowflake accounts.
+2. Configure Kafka Connect with the Snowflake connector.
+3. Run the pipeline to stream data in real-time.
+
+## Technologies Used
+- Apache Kafka
+- Snowflake
+- Kafka Connect
+- ETL Pipelines
+
