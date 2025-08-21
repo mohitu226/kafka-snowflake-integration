@@ -1,0 +1,12 @@
+confluent login --save
+confluent environment list
+confluent environment use env-nr2ng6
+confluent kafka cluster use lkc-vmk72z
+
+confluent kafka topic list
+confluent kafka topic describe demo_topic
+
+confluent api-key store 52FU2BIOVRFTKMZ7 cfltcN2MbiIIGERkDqAqN2sHnJwdrlPEdPZ5AnAtg+ZS2cwKtemHb7J2ioJBx27w
+confluent api-key use 52FU2BIOVRFTKMZ7
+
+confluent kafka topic produce demo_topic
